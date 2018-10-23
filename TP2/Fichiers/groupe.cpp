@@ -179,7 +179,7 @@ ostream& operator<<(ostream& os, const Groupe &groupe){
 	os << endl;
 
 	if (groupe.transferts_.size() != 0) {
-		os << "Les transferts suivants ont ete realiser pour equilibrer  : " << endl;
+		os << "Les transferts suivants ont ete realises pour equilibrer  : " << endl;
 		for (int i = 0; i < groupe.transferts_.size(); i++) {
 			os << "\t";
 			os << *groupe.transferts_[i];
