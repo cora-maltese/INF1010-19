@@ -3,10 +3,12 @@
 * Date: 19 octobre 2018
 * Auteur: Wassim Khene & Ryan Hardie
 *******************************************/
+
 #pragma once
 
 #include "transfert.h"
 #include "utilisateurPremium.h"
+#include "utilisateurRegulier.h"
 
 const double FRAIS_TRANSFERT = 1.0;
 
@@ -20,7 +22,8 @@ public:
 	void setcourriel(string courriel);
 
 	// TODO
-	double getFraisTransfert() const;
+	virtual double getFraisTransfert() const;
+
 private:
 	string courriel_;
 };

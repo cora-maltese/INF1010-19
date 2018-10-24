@@ -33,7 +33,7 @@ public:
 	double getTotalATransferer() const;
 	double getBalance() const;
 
-	// Methodes de modification
+	// Methodes de modifications
 	void setNom(const string& nom);
 	void setCourriel(const string& courriel);
 	void setIdPaypal(const string idPaypal);
@@ -45,7 +45,8 @@ public:
 	Utilisateur& operator+=(Depense* depense);
 
 	// TODO
-	void print(ostream& os) const;
+	// print devient une fonction virtuelle pure pour que Utilisateur devienne une classe abstraite
+	virtual void print(ostream& os) const = 0;
 	
 	// Methode d'affichage
 	friend ostream& operator<<(ostream& os, const Utilisateur& user);
@@ -59,4 +60,5 @@ protected:
 	double balanceFrais_;
 	double balanceTransferts_;
 };
+
 #endif

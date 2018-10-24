@@ -8,16 +8,19 @@
 
 TransfertPaypal::TransfertPaypal(double montant, Utilisateur * expediteur, Utilisateur * receveur)
 	: Transfert(montant, expediteur, receveur)
-{
-}
+{}
 
-string TransfertPaypal::getId() const
-{
+string TransfertPaypal::getId() const {
 	return id_;
 }
 
-void TransfertPaypal::setId(string id)
-{
+void TransfertPaypal::setId(string id) {
 	id_ = id;
 }
 
+double TransfertPaypal::getFraisTransfert() const {
+	if (typeid(*expediteur_) == typeid(UtilisateurRegulier)) {
+		return (COMMISSION * montant_ + FRAIS);
+	}
+	return 0;
+}

@@ -3,6 +3,7 @@
 * Date: 19 octobre 2018
 * Auteur: Wassim Khene & Ryan Hardie
 *******************************************/
+
 #ifndef UTILISATEUR_REGULIER_H
 #define UTILISATEUR_REGULIER_H
 
@@ -10,20 +11,18 @@
 
 class UtilisateurRegulier : public Utilisateur {
 public : 
-
 	// Constructeurs 
-	UtilisateurRegulier(const string& nom = "", MethodePaiement methodePaiement = Interac, const string& courriel = "", 
-		const string& idPaypal = "");
+	UtilisateurRegulier(const string& nom = "", MethodePaiement methodePaiement = Interac, const string& courriel = "", const string& idPaypal = "");
 
 	// Methode d'acces 
-	bool getPossedeGroupe() const; 
+	bool getPossedeGroupe() const;
 	 
 	// Methodes de modifications
-	void setPossedeGroupe(bool etat); 
+	void setPossedeGroupe(bool etat);
 		
-	//Affichage
+	// Affichage
 	// TODO
-	void print(ostream& os) const;
+	virtual void print(ostream& os) const;
 
 private :
 	bool possedeGroupe_; 

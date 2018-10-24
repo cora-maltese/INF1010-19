@@ -25,8 +25,7 @@ string Utilisateur::getNom() const {
 	return nom_;
 }
 
-double Utilisateur::getTotalATransferer() const
-{
+double Utilisateur::getTotalATransferer() const {
 	return balanceTransferts_;
 }
 
@@ -34,23 +33,19 @@ vector <Depense*> Utilisateur::getDepenses() const {
 	return depenses_;
 }
 
-double Utilisateur::getBalance() const
-{
+double Utilisateur::getBalance() const {
 	return balanceFrais_;
 }
 
-string Utilisateur::getCourriel() const
-{
+string Utilisateur::getCourriel() const {
 	return courriel_;
 }
 
-string Utilisateur::getIdPaypal() const
-{
+string Utilisateur::getIdPaypal() const {
 	return idPaypal_;
 }
 
-MethodePaiement Utilisateur::getMethodePaiement() const
-{
+MethodePaiement Utilisateur::getMethodePaiement() const {
 	return methodePaiement_;
 }
 
@@ -59,23 +54,19 @@ void Utilisateur::setNom(const string& nom) {
 	nom_ = nom;
 }
 
-void Utilisateur::setCourriel(const string & courriel)
-{
+void Utilisateur::setCourriel(const string & courriel) {
 	courriel_ = courriel;
 }
 
-void Utilisateur::setIdPaypal(const string idPaypal)
-{
+void Utilisateur::setIdPaypal(const string idPaypal) {
 	idPaypal_ = idPaypal;
 }
 
-void Utilisateur::setMethodePaiement(MethodePaiement methodePaiement)
-{
+void Utilisateur::setMethodePaiement(MethodePaiement methodePaiement) {
 	methodePaiement_ = methodePaiement;
 }
 
-void Utilisateur::modifierBalanceFrais(double montant)
-{
+void Utilisateur::modifierBalanceFrais(double montant) {
 	balanceFrais_ += montant;
 }
 
@@ -89,8 +80,7 @@ Utilisateur& Utilisateur::operator+=(Depense* depense) {
 }
 
 // Methode d'affichage
-ostream& operator<<(ostream& os, const Utilisateur& utilisateur)
-{
+ostream& operator<<(ostream& os, const Utilisateur& utilisateur) {
 	utilisateur.print(os);
 	return os;
 }

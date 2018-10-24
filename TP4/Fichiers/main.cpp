@@ -121,7 +121,7 @@ int main() {
 		&& ur4->getTotalATransferer() == -300);
 
 
-	// Remise a 0 des valeurs balancs et valeurs a transferer
+	// Remise a 0 des valeurs balances et valeurs a transferer
 	up1->modifierBalanceFrais(3);
 	up2->modifierBalanceFrais(6);
 	ur2->modifierBalanceFrais(-4.2);

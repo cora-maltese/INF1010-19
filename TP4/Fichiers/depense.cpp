@@ -6,11 +6,9 @@
 
 #include "depense.h"
 
-// Constucteurs
-
-Depense::Depense(const string& nom, double montant, const string& lieu) {
-}
-
+// Constructeurs
+Depense::Depense(const string& nom, double montant, const string& lieu) : nom_(nom), montant_(montant), lieu_(new string(lieu))
+{}
 
 // Methodes d'acces
 string Depense::getNom() const {
@@ -43,5 +41,5 @@ void Depense::setLieu(const string& nom)
 // Methode d'affichage
 ostream & operator<<(ostream& os, const Depense& depense)
 {
-	return os << "- Depense (a " << *depense.lieu_ << ") : "  << depense.nom_ << ". Prix : " << depense.montant_ << "$" << endl;
+	return os << "- Depense (a " << *depense.lieu_ << ") : "  << depense.nom_ << ". | Prix: " << depense.montant_ << "$" << endl;
 }

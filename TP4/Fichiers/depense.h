@@ -16,7 +16,7 @@ class Depense {
 public:
 	// Constructeurs
 	// TODO
-	Depense(const string& nom = "", double montant = 0 , const string& lieu = "Montreal");
+	Depense(const string& nom = "", double montant = 0, const string& lieu = "Montreal");
 
 	// Methodes d'acces
 	string getNom() const;
@@ -30,10 +30,11 @@ public:
 
 	// Affichage
 	friend ostream& operator<<(ostream& os, const Depense& depense);
+
 private:
 	string nom_;
 	double montant_;
 	string* lieu_;
-
 };
+
 #endif

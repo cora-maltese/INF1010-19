@@ -7,7 +7,6 @@
 #include "groupe.h"
 
 // Constructeurs
-
 Groupe::Groupe() {
 	nom_ = "";
 }
@@ -20,23 +19,19 @@ string Groupe::getNom() const {
 	return nom_;
 }
 
-vector<Depense*> Groupe::getDepenses() const
-{
+vector<Depense*> Groupe::getDepenses() const {
 	return depenses_;
 }
 
-vector<Utilisateur*> Groupe::getUtilisateurs() const
-{
+vector<Utilisateur*> Groupe::getUtilisateurs() const {
 	return utilisateurs_;
 }
 
-vector<Transfert*> Groupe::getTransferts() const
-{
+vector<Transfert*> Groupe::getTransferts() const {
 	return transferts_;
 }
 
-vector<double> Groupe::getComptes() const
-{
+vector<double> Groupe::getComptes() const {
 	return comptes_;
 }
 
@@ -54,7 +49,6 @@ void Groupe::setNom(const string& nom) {
 }
 
 void Groupe::equilibrerComptes() {
-
 	bool calcul = true;
 	int count = 0;
 	while (calcul) {
@@ -96,12 +90,10 @@ void Groupe::equilibrerComptes() {
 			calcul = false;
 		}
 	}
-
 }
 
 // Methode d'affichage
-ostream & operator<<(ostream& os, const Groupe& groupe)
-{
+ostream & operator<<(ostream& os, const Groupe& groupe) {
 	os << "\nGroupe " << groupe.nom_ << ".\nCout total: " << groupe.getTotalDepenses() << "$ \nUtilisateurs:    \n\n";
 	for (int i = 0; i < groupe.utilisateurs_.size(); i++) {
 		os <<"\t- " << *groupe.utilisateurs_[i];

@@ -7,12 +7,13 @@
 #ifndef TRANSFERT_H
 #define TRANSFERT_H
 
+#include <iostream>
+#include <stdio.h>
+
 #include "utilisateur.h"
 #include "utilisateurPremium.h"
 
-#include <iostream>
-
-#include <stdio.h>
+using namespace std;
 
 class Transfert {
 public:
@@ -25,7 +26,8 @@ public:
 	Utilisateur* getReceveur() const;
 	double getMontant() const;
 	// TODO
-	double getFraisTransfert() const;
+	// getFraisTransfert() devient une fonction virtuelle pure pour que Transfert devienne une classe abstraite
+	virtual double getFraisTransfert() const = 0;
 
 	// Méthodes d'affichage
 	void setMontant(double montant);
