@@ -6,8 +6,9 @@
 
 #include "transfertPaypal.h"
 
-TransfertPaypal::TransfertPaypal(double montant, Utilisateur * expediteur, Utilisateur * receveur)
-	: Transfert(montant, expediteur, receveur)
+TransfertPaypal::TransfertPaypal(double montant, Utilisateur* expediteur, Utilisateur* receveur) : 
+	Transfert(montant, expediteur, receveur),
+	id_(expediteur->getIdPaypal())
 {}
 
 string TransfertPaypal::getId() const {
@@ -19,8 +20,8 @@ void TransfertPaypal::setId(string id) {
 }
 
 double TransfertPaypal::getFraisTransfert() const {
-	if (typeid(*expediteur_) == typeid(UtilisateurRegulier)) {
+	if (typeid(*expediteur_) == typeid(UtilisateurPremium))
+		return 0;
+	else
 		return (COMMISSION * montant_ + FRAIS);
-	}
-	return 0;
 }

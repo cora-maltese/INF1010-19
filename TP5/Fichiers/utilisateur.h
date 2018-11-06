@@ -24,8 +24,6 @@ public:
 	Utilisateur();
 	Utilisateur(const string& nom = "", MethodePaiement methodePaiement = Interac, const string& courriel = "", const string& idPaypal= "");
 
-	~Utilisateur();
-
 	// Methodes d'accès
 	string getNom() const;
 	vector<Depense*> getDepenses() const;
@@ -33,22 +31,19 @@ public:
 	string getIdPaypal() const;
 	MethodePaiement getMethodePaiement() const;
 	double getTotalATransferer() const;
-	double getBalanceFrais() const;
+	double getBalance() const;
 
-	// Methodes de modifications
+	// Methodes de modification
 	void setNom(const string& nom);
 	void setCourriel(const string& courriel);
 	void setIdPaypal(const string idPaypal);
 	void setMethodePaiement(MethodePaiement methodePaiement);
 
-	void modifierBalanceTransferts(double montant);
+	void modifierBalanceTranferts(double montant);
 	void modifierBalanceFrais(double montant);
 
 	Utilisateur& operator+=(Depense* depense);
-
-
-	// print devient une fonction virtuelle pure pour que Utilisateur devienne une classe abstraite
-	virtual void print(ostream& os) const;
+	virtual void print(ostream& os) const = 0;
 	
 	// Methode d'affichage
 	friend ostream& operator<<(ostream& os, const Utilisateur& user);
@@ -62,5 +57,4 @@ protected:
 	double balanceFrais_;
 	double balanceTransferts_;
 };
-
 #endif

@@ -6,8 +6,9 @@
 
 #include "utilisateurRegulier.h"
 
-UtilisateurRegulier::UtilisateurRegulier(const string & nom, MethodePaiement methodePaiement, const string & courriel, const string & idPaypal)
-	: Utilisateur(nom, methodePaiement, courriel, idPaypal), possedeGroupe_(false)
+UtilisateurRegulier::UtilisateurRegulier(const string & nom, MethodePaiement methodePaiement, const string & courriel, const string & idPaypal) : 
+	Utilisateur(nom, methodePaiement, courriel, idPaypal), 
+	possedeGroupe_(false)
 {}
 
 bool UtilisateurRegulier::getPossedeGroupe() const {
@@ -19,11 +20,14 @@ void UtilisateurRegulier::setPossedeGroupe(bool possedeGroupe) {
 }
 
 void UtilisateurRegulier::print(ostream& os) const {
-	os << "Utilisateur (Regulier, dans un groupe) " << nom_ << " :" << endl;
-	os << "\t\tTotal a payer: " << balanceTransferts_ << "$ (et " << balanceFrais_ << "$ de frais)" << endl;
-	os << "\t\tListe des depenses : " << endl;
-	for (size_t i = 0; i < depenses_.size(); i++) {
-		os << "\t\t\t" << *depenses_[i];
+	if (possedeGroupe_) {
+		os << "Utilisateur " << nom_ << " (regulier, dans un groupe) :" << endl;
+		os << "\t\tTotal a payer: " << balanceTransferts_ << "$ (et " << balanceFrais_ << "$ de frais)" << endl;
+		Utilisateur::print(os);
 	}
-	os << endl;
+	else {
+		os << "Utilisateur " << nom_ << " (regulier) :" << endl;
+		os << "\t\tTotal a payer: " << balanceTransferts_ << "$ (et " << balanceFrais_ << "$ de frais)" << endl;
+		Utilisateur::print(os);
+	}
 }

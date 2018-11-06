@@ -14,16 +14,11 @@ using namespace std;
 
 class Depense {
 public:
-	// Constructeur
-	Depense(const string& nom = "", double montant = 0, const string& lieu = "Montreal");
-
-	// Constructeur par copie
+	// Constructeurs
+	Depense(const string& nom = "", double montant = 0 , const string& lieu = "Montreal");
 	Depense(const Depense& depense);
 
-	// Surcharge de l'operateur =
-	Depense& operator=(const Depense& depense);
-
-	// Destructeur
+	// Destructeur 
 	~Depense();
 
 	// Methodes d'acces
@@ -35,14 +30,16 @@ public:
 	void setNom(const string& nom);
 	void setMontant(double montant);
 	void setLieu(const string& lieu);
+	
+	//operateurs
+	Depense& operator=(const Depense& depense);
 
-	// Methode d'affichage
+	// Affichage
 	friend ostream& operator<<(ostream& os, const Depense& depense);
-
 private:
 	string nom_;
 	double montant_;
 	string* lieu_;
-};
 
+};
 #endif

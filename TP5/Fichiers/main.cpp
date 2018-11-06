@@ -1,6 +1,6 @@
 /********************************************
-* Titre: Travail pratique #4 - main.cpp
-* Date: 19 octobre 2018
+* Titre: Travail pratique #5 - main.cpp
+* Date: 4 nonvembre 2018
 * Auteur: Wassim Khene & Ryan Hardie
 *******************************************/
 
@@ -9,6 +9,7 @@
 #include "utilisateur.h"
 #include "transfert.h"
 #include "groupe.h"
+#include "foncteur.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ int main() {
 	/*
 	* Depense
 	*/
+	
 	// Test 1: Constructeur par copie
 	tests.push_back(d2->getNom() == "test1"
 		&& d2->getMontant() == 50
@@ -72,12 +74,12 @@ int main() {
 
 	uptest->modifierBalanceFrais(10);
 	uptest->modifierBalanceFrais(-15);
-	uptest->modifierBalanceTransferts(50);
-	uptest->modifierBalanceTransferts(-20);
+	uptest->modifierBalanceTranferts(50);
+	uptest->modifierBalanceTranferts(-20);
 
 	// Test 4: Methodes de Utilisateur
 	tests.push_back(uptest->getDepenses().size() == 2
-		&& uptest->getBalanceFrais() == -5
+		&& uptest->getBalance() == -5
 		&& uptest->getTotalATransferer() == 30);
 
 	/*
@@ -98,41 +100,41 @@ int main() {
 	transferts[0]->effectuerTransfert();
 	// Test 8: 1er transfert
 	tests.push_back(up1->getTotalATransferer() == 100
-		&& up1->getBalanceFrais() == -3
+		&& up1->getBalance() == -3
 		&& up2->getTotalATransferer() == -100);
 
 	transferts[1]->effectuerTransfert();
 	// Test 9: 2eme transfert
 	tests.push_back(up2->getTotalATransferer() == 100
-		&& up2->getBalanceFrais() == -6
+		&& up2->getBalance() == -6
 		&& ur1->getTotalATransferer() == -200);
 
 	transferts[2]->effectuerTransfert();
 	// Test 10: 3eme transfert
 	tests.push_back(ur2->getTotalATransferer() == 150
-		&& ur2->getBalanceFrais() == 4.2
+		&& ur2->getBalance() == 4.2
 		&& up3->getTotalATransferer() == -150);
 
 	transferts[3]->effectuerTransfert();
 	// Test 11: 4eme transfert
 	tests.push_back(ur3->getTotalATransferer() == 300
-		&& ur3->getBalanceFrais() == 1
+		&& ur3->getBalance() == 1
 		&& ur4->getTotalATransferer() == -300);
 
 
-	// Remise a 0 des valeurs balances et valeurs a transferer
+	// Remise a 0 des valeurs balancs et valeurs a transferer
 	up1->modifierBalanceFrais(3);
 	up2->modifierBalanceFrais(6);
 	ur2->modifierBalanceFrais(-4.2);
 	ur3->modifierBalanceFrais(-1);
 
-	up1->modifierBalanceTransferts(-100);
-	up2->modifierBalanceTransferts(-100);
-	up3->modifierBalanceTransferts(150);
-	ur1->modifierBalanceTransferts(200);
-	ur2->modifierBalanceTransferts(-150);
-	ur3->modifierBalanceTransferts(-300);
-	ur4->modifierBalanceTransferts(300);
+	up1->modifierBalanceTranferts(-100);
+	up2->modifierBalanceTranferts(-100);
+	up3->modifierBalanceTranferts(150);
+	ur1->modifierBalanceTranferts(200);
+	ur2->modifierBalanceTranferts(-150);
+	ur3->modifierBalanceTranferts(-300);
+	ur4->modifierBalanceTranferts(300);
 
 	/*
 	* Groupe
@@ -148,8 +150,8 @@ int main() {
 	// Test 13: jours restants a 0
 	tests.push_back(groupe1->getUtilisateurs().size() == 1);
 
-	*groupe1 += up3;
-	*groupe1 += up4;
+	*groupe1 += up3; // 1
+	*groupe1 += up4; // 2
 	// Test 14: ajouts utilisateurs premium
 	tests.push_back(groupe1->getUtilisateurs().size() == 3);
 
@@ -173,8 +175,16 @@ int main() {
 	tests.push_back(groupe1->getDepenses().size() == 1);
 
 	// Test 18: modification des comptes
+
+	// TODO : Décommenter ce test et commenter le test suivant (pour pouvoir tester avec les méthodes de la classe GestionnaireGenerique) ---------
+	/*tests.push_back(groupe1->getGestionnaireUtilisateurs()->getConteneur()[up1] == 150
+		&& groupe1->getComptes()[1] == -30);*/
+	// --------------------------------------------------------------------------------------------------------------------------------------------
+
+	// TODO : Commenter ce test et décommenter le test précédent (pour pouvoir tester avec les méthodes de la classe GestionnaireGenerique) -------
 	tests.push_back(groupe1->getComptes()[0] == 150
 		&& groupe1->getComptes()[1] == -30);
+	// --------------------------------------------------------------------------------------------------------------------------------------------
 
 	groupe1->ajouterDepense(360, up4, "d2")
 		.ajouterDepense(240, up3, "d3")
@@ -186,17 +196,43 @@ int main() {
 		.ajouterDepense(180, up1, "d9");
 
 	// Test 19: bonne valeurs pour les comptes
+
+	// TODO : Commenter ce test et décommenter le test suivant (pour pouvoir tester avec les méthodes de la classe GestionnaireGenerique) ---------
 	tests.push_back(groupe1->getComptes()[0] == 20
 		&& groupe1->getComptes()[1] == -100
 		&& groupe1->getComptes()[2] == 20
 		&& groupe1->getComptes()[3] == -280
 		&& groupe1->getComptes()[4] == 380
-		&& groupe1->getComptes()[5] == -40 
+		&& groupe1->getComptes()[5] == -40
 		&& groupe1->getTotalDepenses() == 2040);
+	// --------------------------------------------------------------------------------------------------------------------------------------------
 
+	// TODO : Décommenter ce test et commenter le précédent (pour pouvoir tester avec les méthodes de la classe GestionnaireGenerique) ------------
+	/*tests.push_back(groupe1->getGestionnaireUtilisateurs()->getConteneur()[up1] == 20
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[up3] == -100
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[up4] == 20
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[ur1] == -280
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[ur2] == 380
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[ur3] == -40
+		&& groupe1->getTotalDepenses() == 2040);*/
+	// --------------------------------------------------------------------------------------------------------------------------------------------
+
+	// Test 20 - 21 : verification de la méthode getUtilisateursEntre (obtenir les utilisateur contenant un compte compris entre -100 et 100 inclusivement)
+	// TODO : Décommenter lorsque votre TP sera terminé pour tester la méthode pour -----------------------------------------------------------------------
+	/*vector<pair<Utilisateur*, double>> vec = groupe1->getGestionnaireUtilisateurs()->getUtilisateursEntre(-100, 100);
+
+	tests.push_back(vec.size() == 4);
+
+	tests.push_back(vec[0].second == -40 
+		&& vec[1].second == 20
+		&& vec[2].second == -100
+		&& vec[3].second == 20);*/
+	// ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+	// Test 22: verification des transferts
 	groupe1->equilibrerComptes();
 
-	// Test 20: verification des transferts
+	// TODO : Commenter ce test et décommenter le test suivant (pour pouvoir tester avec les méthodes de la classe GestionnaireGenerique) ----------------
 	tests.push_back(groupe1->getTransferts().size() == 4
 		&& groupe1->getComptes()[0] == 0
 		&& groupe1->getComptes()[1] == 0
@@ -204,27 +240,43 @@ int main() {
 		&& groupe1->getComptes()[3] == 0
 		&& groupe1->getComptes()[4] == 0
 		&& groupe1->getComptes()[5] == 0);
+	// ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-	// Test 21: verification de la nature des transferts
+	// TODO : Décommenter ce test et commenter le précédent (pour pouvoir tester avec les méthodes de la classe GestionnaireGenerique) --------------------
+	/*tests.push_back(groupe1->getTransferts().size() == 4
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[up1] == 0
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[up3] == 0
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[up4] == 0
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[ur1] == 0
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[ur2] == 0
+		&& groupe1->getGestionnaireUtilisateurs()->getConteneur()[ur4] == 0);*/
+	// ----------------------------------------------------------------------------------------------------------------------------------------------------
+	// Test 23: verification de la nature des transferts
 	tests.push_back(dynamic_cast<TransfertPaypal*>(groupe1->getTransferts()[0]) != nullptr
 		&& dynamic_cast<TransfertPaypal*>(groupe1->getTransferts()[1]) != nullptr
 		&& dynamic_cast<TransfertInterac*>(groupe1->getTransferts()[2]) != nullptr
 		&& dynamic_cast<TransfertInterac*>(groupe1->getTransferts()[3]) != nullptr);
 
-	// Test 22 - 27: verification des balances et montants a transferts pour les utilisateurs
-	tests.push_back(groupe1->getUtilisateurs()[0]->getTotalATransferer() == -20
-		&& groupe1->getUtilisateurs()[0]->getBalanceFrais() == 0);
+	// Test 24 - 29: verification des balances et montants a transferts pour les utilisateurs
+	tests.push_back(up1->getTotalATransferer() == -20
+		&& up1->getBalance() == 0);
 
-	tests.push_back(groupe1->getUtilisateurs()[1]->getTotalATransferer() == 100
-		&& groupe1->getUtilisateurs()[1]->getBalanceFrais() == -3);
-	tests.push_back(groupe1->getUtilisateurs()[2]->getTotalATransferer() == -20
-		&& groupe1->getUtilisateurs()[2]->getBalanceFrais() == 0);
-	tests.push_back(groupe1->getUtilisateurs()[3]->getTotalATransferer() == 280
-		&& floorf(groupe1->getUtilisateurs()[3]->getBalanceFrais() * 100) / 100 == floorf(7.58 * 100) / 100);
-	tests.push_back(groupe1->getUtilisateurs()[4]->getTotalATransferer() == -380
-		&& groupe1->getUtilisateurs()[4]->getBalanceFrais() == 0);
-	tests.push_back(groupe1->getUtilisateurs()[5]->getTotalATransferer() == 40
-		&& groupe1->getUtilisateurs()[5]->getBalanceFrais() == 2);
+	tests.push_back(up3->getTotalATransferer() == 100
+		&& up3->getBalance() == -3);
+	tests.push_back(up4->getTotalATransferer() == -20
+		&& up4->getBalance() == 0);
+	tests.push_back(ur1->getTotalATransferer() == 280
+		&& floorf(ur1->getBalance() * 100) / 100 == floorf(7.58 * 100) / 100);
+	tests.push_back(ur2->getTotalATransferer() == -380
+		&& ur2->getBalance() == 0);
+	tests.push_back(ur3->getTotalATransferer() == 40
+		&& ur3->getBalance() == 2);
+
+	// TEST 30 : verification getUtilisateurSuivant
+	// TODO : Décommenter ce test pour pouvoir tester la méthode GetUtilisateurSuivant ----------------
+	//tests.push_back(groupe1->getGestionnaireUtilisateurs()->getUtilisateurSuivant(up1, 0) == up3);
+	// ------------------------------------------------------------------------------------------------
+	
 
 	// Affichage des tests
 	cout << "TESTS" << endl;
@@ -240,70 +292,28 @@ int main() {
 	// Test des methodes d'affichage
 	cout << *groupe1;
 
-	// TODO: Liberation de la memoire si nécessaire
+	// Liberation de la memoire
+	delete up1;
+	delete up2;
+	delete up3;
+	delete up4;
 
+	delete ur1;
+	delete ur2;
+	delete ur3;
+	delete ur4;
+
+	delete groupe1;
+	delete groupe2;
+
+	for (int i = 0; i < transferts.size(); i++) {
+		delete transferts[i];
+	}
+
+	delete d1;
+	delete d2;
+
+	delete uptest;
 
 	return 0;
 }
-
-
-/****************************
-
-1) La sortie du code est 1
-
-2) Car on a spécifié au vecteur qu'il contenait des pointeurs d'objets de la classe A, et la méthode A::f() de la classe A n’a pas été déclarée virtuelle, donc c’est la fonction de la classe de base qui sera appelée et non la fonction de l’objet réel. 
-
-3)
-class A {
-public:
-	void f() const { cout << 1; }
-};
-
-class B : public A {
-public:
-	void f() const { cout << 2; }
-};
-   
-class C : public B {
-public:
-	void f() const { cout << 3; }
-};
-
-int main() {
-	   vector<B*> v;
-	   C b;
-	   v.push_back(&b);
-	   v[0]->f();
-	   return 0;
-}
-// aucune méthode n’est déclarée virtuelle, donc c’est la méthode B::f() qui est appelée même si elle est redéfinie dans la classe C.
-
-————————————————————
-
-class A {
-public:
-	void f() const { cout << 1; }
-};
-
-class B : public A {
-public:
-	virtual void f() const { cout << 2; }
-};
-
-class C : public B {
-public:
-};
-
-int main() {
-	vector<B*> v;
-	C b;
-	v.push_back(&b);
-	v[0]->f();
-	return 0;
-}
-// Ici la méthode B::f() est virtuelle, mais elle n’est pas redéfinie dans la classe C. Alors c’est B::f() qui est appelée.
-————————————————————
-
-4) Car Transfert est une classe abstraite puisqu’elle contient une fonction virtuelle pure. Il est interdit de d'instancier un objet de cette classe.
-
-*****************/

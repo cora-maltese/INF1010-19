@@ -7,17 +7,12 @@
 #include "transfert.h"
 
 // Constructeurs
-Transfert::Transfert() : 
-	montant_(0), 
-	expediteur_(nullptr), 
-	receveur_(nullptr) 
-{}
+Transfert::Transfert() : montant_(0), expediteur_(nullptr), receveur_(nullptr) {
+}
 
 Transfert::Transfert(double montant, Utilisateur* expediteur, Utilisateur* receveur) : 
-	montant_(montant), 
-	expediteur_(expediteur), 
-	receveur_(receveur) 
-{}
+	montant_(montant), expediteur_(expediteur), receveur_(receveur) {
+}
 
 // Methodes d'acces
 double Transfert::getMontant() const {
@@ -45,23 +40,19 @@ void Transfert::setReceveur(Utilisateur *receveur) {
 	receveur_ = receveur;
 }
 
-// Methodes à implementer
-double Transfert::getFraisTransfert() const {
-	return (montant_ * -0.03);
-}
-
 void Transfert::effectuerTransfert() {
-	expediteur_->modifierBalanceTransferts(montant_);
-	receveur_->modifierBalanceTransferts(-montant_);
+	// Expediteur
+	expediteur_->modifierBalanceTranferts(montant_);
+	expediteur_->modifierBalanceFrais(getFraisTransfert());
+	if (dynamic_cast<UtilisateurPremium*>(expediteur_) != nullptr) {
+		expediteur_->modifierBalanceFrais(-montant_ * TAUX_EPARGNE);
+	}
+	receveur_->modifierBalanceTranferts(-montant_);
 
-	if (typeid(*expediteur_) == typeid(UtilisateurPremium))
-		expediteur_->modifierBalanceFrais(Transfert::getFraisTransfert());
-	else
-		expediteur_->modifierBalanceFrais(getFraisTransfert());
 }
 
-// Methode d'affichage
+//Methode affichage
 ostream& operator<<(ostream& os, const Transfert& transfert) {
-	os << transfert.expediteur_->getNom() << "\t -> " << transfert.receveur_->getNom() << "\t : " << transfert.montant_ << "$" << endl;
-	return os;
+	return os << "- " << left << setw(8) <<setfill(' ') << transfert.getExpediteur()->getNom() << " -> "  
+		<< left << setw(8) << transfert.getReceveur()->getNom() << " : " << transfert.getMontant() << "$" << endl;
 }

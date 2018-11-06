@@ -10,8 +10,7 @@
 Utilisateur::Utilisateur() : nom_("") {
 }
 
-Utilisateur::Utilisateur(const string& nom, MethodePaiement methodePaiement, 
-	const string& courriel, const string& idPaypal):
+Utilisateur::Utilisateur(const string& nom, MethodePaiement methodePaiement, const string& courriel, const string& idPaypal) :
 	nom_(nom), 
 	courriel_(courriel), 
 	idPaypal_(idPaypal), 
@@ -19,6 +18,14 @@ Utilisateur::Utilisateur(const string& nom, MethodePaiement methodePaiement,
 	balanceFrais_(0),
 	balanceTransferts_(0)
 {}
+
+// Destructeur
+Utilisateur::~Utilisateur() {
+	for (int i = 0; i < depenses_.size(); i++) {
+		delete depenses_[i];
+		depenses_[i] = nullptr;
+	}
+}
 
 // Methodes d'acces
 string Utilisateur::getNom() const {
@@ -33,7 +40,7 @@ vector <Depense*> Utilisateur::getDepenses() const {
 	return depenses_;
 }
 
-double Utilisateur::getBalance() const {
+double Utilisateur::getBalanceFrais() const {
 	return balanceFrais_;
 }
 
@@ -49,7 +56,7 @@ MethodePaiement Utilisateur::getMethodePaiement() const {
 	return methodePaiement_;
 }
 
-//Methodes de modification
+// Methodes de modifications
 void Utilisateur::setNom(const string& nom) {
 	nom_ = nom;
 }
@@ -70,13 +77,22 @@ void Utilisateur::modifierBalanceFrais(double montant) {
 	balanceFrais_ += montant;
 }
 
-void Utilisateur::modifierBalanceTranferts(double montant) {
+void Utilisateur::modifierBalanceTransferts(double montant) {
 	balanceTransferts_ += montant;
 }
 
 Utilisateur& Utilisateur::operator+=(Depense* depense) {
 	depenses_.push_back(depense);
 	return *this;
+}
+
+// Methode print
+void Utilisateur::print(ostream& os) const {
+	os << "\t\tListe des depenses : " << endl;
+	for (size_t i = 0; i < depenses_.size(); i++) {
+		os << "\t\t\t" << *depenses_[i];
+	}
+	os << endl;
 }
 
 // Methode d'affichage

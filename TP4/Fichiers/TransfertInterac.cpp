@@ -6,8 +6,9 @@
 
 #include "transfertInterac.h"
 
-TransfertInterac::TransfertInterac(double montant, Utilisateur* expediteur, Utilisateur* receveur)
-	: Transfert(montant, expediteur, receveur)
+TransfertInterac::TransfertInterac(double montant, Utilisateur* expediteur, Utilisateur* receveur) : 
+	Transfert(montant, expediteur, receveur), 
+	courriel_(receveur->getCourriel())
 {}
 
 string TransfertInterac::getCourriel() const {
@@ -19,8 +20,8 @@ void TransfertInterac::setcourriel(string courriel) {
 }
 
 double TransfertInterac::getFraisTransfert() const {
-	if (typeid(*expediteur_) == typeid(UtilisateurRegulier)) {
-		return 1;
-	}
-	return 0;
+	if (typeid(*expediteur_) == typeid(UtilisateurPremium))
+		return 0;
+	else
+		return 1.0;
 }

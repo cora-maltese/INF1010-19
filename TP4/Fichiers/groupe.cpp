@@ -11,8 +11,9 @@ Groupe::Groupe() {
 	nom_ = "";
 }
 
-Groupe::Groupe(const string& nom) : nom_(nom) {
-}
+Groupe::Groupe(const string& nom) : 
+	nom_(nom) 
+{}
 
 // Methodes d'acces
 string Groupe::getNom() const {
@@ -48,6 +49,7 @@ void Groupe::setNom(const string& nom) {
 	nom_ = nom;
 }
 
+// Methode de calcul
 void Groupe::equilibrerComptes() {
 	bool calcul = true;
 	int count = 0;
@@ -57,7 +59,7 @@ void Groupe::equilibrerComptes() {
 		int indexMax = 0;
 		int indexMin = 0;
 
-		// On cherche le compte le plus eleve et le moins eleve
+		// On cherche le compte le plus élevé et le moins élevé
 		for (int i = 0; i < utilisateurs_.size(); i++) {
 			if (comptes_[i] > max) {
 				max = comptes_[i];
@@ -72,11 +74,32 @@ void Groupe::equilibrerComptes() {
 		// On cherche lequel des deux a la dette la plus grande
 		if (-min <= max && min != 0 && max != 0) {
 			// Faire le transfert  du bon type
+			if ((utilisateurs_[indexMin]->getMethodePaiement()) == 0) {
+				TransfertPaypal* tPaypal = new TransfertPaypal(min, utilisateurs_[indexMin], utilisateurs_[indexMax]);
+				tPaypal->effectuerTransfert();
+				transferts_.push_back(tPaypal);
+			}
+			else {
+				TransfertInterac* tInteract = new TransfertInterac(min, utilisateurs_[indexMin], utilisateurs_[indexMax]);
+				tInteract->effectuerTransfert();
+				transferts_.push_back(tInteract);
+			}
 			comptes_[indexMax] += min;
 			comptes_[indexMin] = 0;
 		}
-		else if (-min > max  && min != 0 && max != 0) {
+
+		else if (-min > max && min != 0 && max != 0) {
 			// Faire le transfert du bon type
+			if ((utilisateurs_[indexMin]->getMethodePaiement()) == 0) {
+				TransfertPaypal* tPaypal = new TransfertPaypal(max, utilisateurs_[indexMin], utilisateurs_[indexMax]);
+				tPaypal->effectuerTransfert();
+				transferts_.push_back(tPaypal);
+			}
+			else {
+				TransfertInterac* tInteract = new TransfertInterac(max, utilisateurs_[indexMin], utilisateurs_[indexMax]);
+				tInteract->effectuerTransfert();
+				transferts_.push_back(tInteract);
+			}
 			comptes_[indexMax] = 0;
 			comptes_[indexMin] += max;
 		}
@@ -92,6 +115,55 @@ void Groupe::equilibrerComptes() {
 	}
 }
 
+// Methodes d'ajout
+Groupe& Groupe::ajouterDepense(double montant, Utilisateur* payePar, const string& nom, const string& lieu) {
+	for (int i = 0; i < utilisateurs_.size(); i++) {
+		if (payePar->getNom() == utilisateurs_[i]->getNom()) {
+			Depense* nouvelleDepense = new Depense(nom, montant, lieu);
+			depenses_.push_back(nouvelleDepense);
+			*utilisateurs_[i] += nouvelleDepense;
+			for (int j = 0; j < utilisateurs_.size(); j++) {
+				if (j != i)
+					comptes_[j] -= (montant / utilisateurs_.size());
+				else
+					comptes_[j] += (montant - (montant / utilisateurs_.size()));
+			}
+		}
+	}
+	return *this;
+}
+
+// Surcharge de l'opérateur += pour ajouter un utilisateur au groupe
+// Vérifier si le pointeur est Prem ou Reg, vérifer si l'attribut est valide selon le cas, et si oui, faire l'insertion dans le vecteur
+Groupe& Groupe::operator+=(Utilisateur* utilisateur) {
+	UtilisateurPremium* ptrPrem = nullptr;
+	ptrPrem = dynamic_cast<UtilisateurPremium*>(utilisateur);
+
+	UtilisateurRegulier* ptrReg = nullptr;
+	ptrReg = dynamic_cast<UtilisateurRegulier*>(utilisateur);
+
+	if (ptrPrem != nullptr) {
+		if (ptrPrem->getJoursRestants() > 0) {
+			utilisateurs_.push_back(utilisateur);
+			comptes_.push_back(0);
+		}
+		else {
+			cout << "Erreur : l'utilisateur " << ptrPrem->getNom() << " doit renouveler son abonnement Premium." << endl;
+		}
+	}
+
+	else if (ptrReg != nullptr) {
+		if (ptrReg->getPossedeGroupe() == false) {
+			utilisateurs_.push_back(utilisateur);
+			comptes_.push_back(0);
+			ptrReg->setPossedeGroupe(true);
+		}
+		else
+			cout << "Erreur : l'utilisateur " << ptrReg->getNom() << " n'est pas un utilisateur Premium et est deja dans un groupe." << endl;
+	}
+	return *this;
+}
+
 // Methode d'affichage
 ostream & operator<<(ostream& os, const Groupe& groupe) {
 	os << "\nGroupe " << groupe.nom_ << ".\nCout total: " << groupe.getTotalDepenses() << "$ \nUtilisateurs:    \n\n";
@@ -103,7 +175,7 @@ ostream & operator<<(ostream& os, const Groupe& groupe) {
 	if (groupe.transferts_.size() != 0) {
 		os << "Transferts :" << endl;
 		for (int i = 0; i < groupe.transferts_.size(); i++)
-			os << "\t" << *(groupe.transferts_[i]);
+			os << "\t- " << *groupe.transferts_[i];
 	}
 	else {
 		os << "Les comptes ne sont pas equilibres" << endl << endl;

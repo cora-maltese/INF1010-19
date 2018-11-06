@@ -12,15 +12,14 @@ const double FRAIS = 0.30;
 #include "transfert.h"
 #include "utilisateurPremium.h"
 
+
 class TransfertPaypal : public Transfert {
 public:
-	// Constructeur
 	TransfertPaypal(double montant, Utilisateur* expediteur, Utilisateur* receveur);
 
 	string getId() const;
 	void setId(string id);
 
-	// TODO
 	virtual double getFraisTransfert() const;
 
 private:

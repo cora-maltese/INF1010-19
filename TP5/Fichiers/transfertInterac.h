@@ -1,9 +1,8 @@
 /********************************************
-* Titre: Travail pratique #4 - transfertInterac.h
+* Titre: Travail pratique #4 - tranfertInterac.h
 * Date: 19 octobre 2018
 * Auteur: Wassim Khene & Ryan Hardie
 *******************************************/
-
 #pragma once
 
 #include "transfert.h"
@@ -16,12 +15,11 @@ public:
 	// Constructeur
 	TransfertInterac(double montant, Utilisateur* expediteur, Utilisateur* receveur);
 
+	// Methodes d'acces
 	string getCourriel() const;
 	void setcourriel(string courriel);
 
-	// TODO
 	virtual double getFraisTransfert() const;
-
 private:
 	string courriel_;
 };

@@ -13,6 +13,7 @@ const double TAUX_EPARGNE = 0.03;
 
 class UtilisateurPremium : public Utilisateur {
 public :
+
 	// Constructeurs 
 	UtilisateurPremium(const string& nom = "", MethodePaiement methodePaiement = Interac, unsigned int joursRestants = 0, const string& courriel = "", const string& idPaypal = "");
 
@@ -22,7 +23,7 @@ public :
 	// Methodes de modifications
 	void setJoursRestants(unsigned int joursRestants); 
 
-	// Affichage
+	// Methode d'affichage
 	virtual void print(ostream& os) const;
 
 private : 
